@@ -47,7 +47,7 @@ def inference(a):
         for i, filname in enumerate(filelist):
             x = np.load(os.path.join(a.input_mels_dir, filname))
             x = torch.FloatTensor(x).to(device)
-            y_g_hat = generator(x)
+            y_g_hat = generator(x.unsqueeze(0))
             audio = y_g_hat.squeeze()
             audio = audio * MAX_WAV_VALUE
             audio = audio.cpu().numpy().astype('int16')
@@ -61,9 +61,9 @@ def main():
     print('Initializing Inference Process..')
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_mels_dir', default='test_mel_files')
-    parser.add_argument('--output_dir', default='generated_files_from_mel')
-    parser.add_argument('--checkpoint_file', required=True)
+    parser.add_argument('-i','--input_mels_dir', default='test_mel_files')
+    parser.add_argument('-o','--output_dir', default='generated_files_from_mel')
+    parser.add_argument('-c','--checkpoint_file', required=True)
     a = parser.parse_args()
 
     config_file = os.path.join(os.path.split(a.checkpoint_file)[0], 'config.json')
