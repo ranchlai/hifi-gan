@@ -31,6 +31,7 @@ def scan_checkpoint(cp_dir, prefix):
 class HiFiGAN:
     def __init__(self,checkpoint:os.PathLike, h=None, device='cuda'):
         
+        checkpoint = os.path.expanduser(checkpoint)
         config_file = os.path.join(os.path.split(checkpoint)[0], 'config.json')
         with open(config_file) as f:
             data = f.read()
